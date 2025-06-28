@@ -10,10 +10,7 @@ type Props = {
   params: { id: string };
 };
 
-
-export async function generateMetadata({
-  params,
-}: Awaited<Props>): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${params.id}`,
     { cache: "force-cache" }
