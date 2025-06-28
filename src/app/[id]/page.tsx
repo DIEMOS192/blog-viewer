@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { type FC } from "react";
 
 interface Post {
   id: number;
@@ -7,14 +6,15 @@ interface Post {
   body: string;
 }
 
-//  Fix: constrain the expected prop type to the correct Next.js type
-type PageProps = {
+
+type Props = {
   params: { id: string };
 };
 
-export const generateMetadata = async ({
+// Fix: mark `generateMetadata`'s param as Promise-compatible
+export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> => {
+}: Awaited<Props>): Promise<Metadata> {
   const post = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${params.id}`,
     { cache: "force-cache" }
@@ -24,9 +24,9 @@ export const generateMetadata = async ({
     title: post.title,
     description: post.body.slice(0, 100),
   };
-};
+}
 
-const PostPage: FC<PageProps> = async ({ params }) => {
+export default async function PostPage({ params }: Props) {
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${params.id}`,
     {
@@ -46,6 +46,4 @@ const PostPage: FC<PageProps> = async ({ params }) => {
       <p className="text-gray-700 leading-relaxed">{post.body}</p>
     </div>
   );
-};
-
-export default PostPage;
+}
