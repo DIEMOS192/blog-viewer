@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 
-interface LayoutProps {
+interface PageProps {
   children: ReactNode;
   params: Promise<{ id: string }>; // params is now a Promise
 }
@@ -9,7 +9,7 @@ interface LayoutProps {
 //  Correct usage of generateMetadata in Next.js 15
 export async function generateMetadata({
   params,
-}: LayoutProps): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
 
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
@@ -21,6 +21,6 @@ export async function generateMetadata({
   };
 }
 
-export default async function PostLayout({ children }: Awaited<LayoutProps>) {
+export default async function PostLayout({ children }: Awaited<PageProps>) {
   return <div>{children}</div>;
 }
