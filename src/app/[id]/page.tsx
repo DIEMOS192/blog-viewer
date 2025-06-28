@@ -6,12 +6,11 @@ interface Post {
   body: string;
 }
 
-
 type Props = {
   params: { id: string };
 };
 
-// Fix: mark `generateMetadata`'s param as Promise-compatible
+
 export async function generateMetadata({
   params,
 }: Awaited<Props>): Promise<Metadata> {
@@ -29,9 +28,7 @@ export async function generateMetadata({
 export default async function PostPage({ params }: Props) {
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${params.id}`,
-    {
-      cache: "force-cache",
-    }
+    { cache: "force-cache" }
   );
 
   if (!res.ok) {
